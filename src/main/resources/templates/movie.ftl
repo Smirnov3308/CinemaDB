@@ -31,5 +31,4 @@
             </div>
         </form>
     </div>
-    <#include "parts/movies.ftl">
 </@c.page>

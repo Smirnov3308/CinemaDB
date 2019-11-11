@@ -3,6 +3,7 @@ package com.smirnov3308.cinemadb.config;
 import com.smirnov3308.cinemadb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,8 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/static/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers( "/", "/registration", "/actors/**", "/static/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/actors/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/actors").permitAll()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().ignoringAntMatchers("/actors/**")
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -31,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+
     }
 
     @Override
